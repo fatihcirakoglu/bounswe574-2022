@@ -101,3 +101,30 @@ To change the last commit use below commands:
 
 ### Rebase your local repository : 
 - git rebase master: It pulls the latest changes in this repository and put your local changes on top of latest commit. There can be conflicts such as merge conflicts, so you have to resolve them.
+
+# WIKIDATA API
+
+Wikidata supports restful API interface which is a web service that allows access to some wiki features like authentication, page operations, and search. It can provide meta information about the wiki and the logged-in user.
+
+Here is an example API that gets the "centralauthtoken" parameter in json format.
+- What is "centralauthtoken" ?
+  - When accessing the API using a cross-domain AJAX request (CORS), use this to authenticate as the current SUL user. Use action=centralauthtoken on this wiki to retrieve the token, before making the CORS request. Each token may only be used once, and expires after 10 seconds. This should be included in any pre-flight request, and therefore should be included in the request URI (not the POST body).
+- API Request:
+
+https://www.wikidata.org/w/api.php?action=centralauthtoken&format=json
+
+```
+{
+	"action": "centralauthtoken",
+	"format": "json"
+}
+```
+
+- Reply:
+```
+{
+    "centralauthtoken": {
+        "centralauthtoken": "1bc6480c4e70756f9d07d13ba48f21ca41ed983"
+    }
+}
+```
