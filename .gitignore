@@ -105,6 +105,7 @@ celerybeat.pid
 .env
 .venv
 swe_django/
+.vscode
 env/
 venv/
 ENV/
