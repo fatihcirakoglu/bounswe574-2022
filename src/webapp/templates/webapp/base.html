@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {%endblock%} | Blogapp</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block css_files %} {% endblock %}
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
+        <div class="container">
+            <a class="navbar-brand" href="#">Blogapp</a>
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Blogs</a>
+                </li>
+            </ul>              
+            </div>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    {% block js_files %} {% endblock %}
+</body>
+</html>
