@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-dark bg-primary navbar-expand-lg ">
+    <nav class="navbar navbar-dark bg-info navbar-expand-lg ">
         <div class="container">
             <a class="navbar-brand" href="#">LetsCoLearn</a>
             <ul class="navbar-nav me-auto">
@@ -25,6 +25,13 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Help</a>
+                </li>
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                    <!-- Do not show anything --> 
+                    {% else %}
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
                 {% if user.is_authenticated %}
