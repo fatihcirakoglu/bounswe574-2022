@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <br/><br/>
+
+    <h2 class="text-center"> {{post.body}}</h2>
+
+     <hr>
+
+     <p class="lead">Author: {{post.author}} </p>
+
+     <p class="lead">Type: {{post.categories}} </p>
+
+     <p class="lead">Publication: {{post.publish_date}} </p>
+
+     <form action="{% url 'post_list' %}" class="form-inline" method="get">
+
+     <button type="submit" class="btn btn-primary btn-lg mb-2">Back</button>
+
+     </form>
+
+  </div>
+
+  {% endblock %}

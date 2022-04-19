@@ -1,12 +1,13 @@
+from operator import contains
 from django.utils.timezone import datetime
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from webapp.forms import CustomUserCreationForm
+from django.shortcuts import render,get_object_or_404
+from .models import  Post, Category
+from django.db.models import Q
 
-
-#def home(request):
-#    return HttpResponse("Hello, this is initial page of Swe573 Django project!")
 
 def home(request):
     return render(request, "webapp/home.html")
@@ -36,3 +37,38 @@ def register(request):
             user = form.save()
             login(request, user)
             return redirect(reverse("home"))
+
+
+def post_list(request):
+
+    post = Post.objects.all()
+
+    return render(request, 'webapp/post_list.html', {'post': post })
+
+def post_detail(request,id):
+
+    post = get_object_or_404(Post, id=id)
+
+    types = Post.objects.all()
+
+    t = types.get(id=post.body.id)
+
+    return render(request, 'webapp/post_detail.html', {'post': post, 'type': t.categories})
+
+def search(request):
+
+    results = []
+
+    if request.method == "GET":
+
+        query = request.GET.get('search')
+        
+        if not query :
+            query = ""
+        #if query == '':
+
+        #    query = ""
+        
+        results = Post.objects.filter(Q(title__icontains=query) | Q(body__icontains=query))
+
+    return render(request, 'webapp/search.html', {'query': query, 'results': results})

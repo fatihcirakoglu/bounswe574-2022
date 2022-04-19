@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="col-md-8 offset-md-2">
+ 
+ {% if query %}
+ 
+            <h2>
+ 
+            {% with results.count as total_results %}
+ 
+            Found {{ total_results }} result{{ total_results|pluralize }}
+ 
+            {% endwith %}
+ 
+            </h2>
+ 
+    {% for c in results %}
+ 
+   <a href="{{c.title}}"><h3>{{c.title}}</h3></a>
+ 
+   <h3>{{c.author_name}}</h3>
+ 
+ 
+    {% empty %}
+ 
+    <h3>No results found.</h3>
+ 
+    {% endfor %}
+ 
+   {% endif %}
+ 
+         <form action="{% url 'post_list' %}" class="form-inline" method="get">
+ 
+         <button type="submit" class="btn btn-primary btn-lg mb-2">Back</button>
+ 
+         </form>
+ 
+     </div>
+ 
+ </div>
+
+ {% endblock %}
