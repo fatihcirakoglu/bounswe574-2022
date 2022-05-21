@@ -1,21 +1,9 @@
 from django.contrib import admin
+from .models import Post, FavouritePost, Profile, Comment, TagDict
 
 # Register your models here.
-
-from .models import Category, Post, Comment
-
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name",)
-
-admin.site.register(Category, CategoryAdmin)
-
-class PostAdmin(admin.ModelAdmin):
-    list_display = ("title",)
-
-admin.site.register(Post, PostAdmin)
-
-
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ("author",)
-
-admin.site.register(Comment, CommentAdmin)
+admin.site.register(Post)
+admin.site.register(FavouritePost)
+admin.site.register(Profile)
+admin.site.register(Comment)
+admin.site.register(TagDict)

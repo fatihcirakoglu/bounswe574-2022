@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from webapp.forms import CustomUserCreationForm
 from django.shortcuts import render,get_object_or_404
-from .models import  Post, Category
+from .models import  Post
 from django.db.models import Q
 
 
