@@ -73,21 +73,18 @@ def signup(request):
 
 
 def postlist(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
     
-    # post_list= Paginator(Post.objects.all().order_by('-created_on'),2)
-    # page= request.GET.get('page')
+    post_list= Paginator(Post.objects.all().order_by('-created_on'),2)
+    page= request.GET.get('page')
 
-    # try:
-    #     posts = post_list.page(page)
-    # except PageNotAnInteger:
-    #     posts = post_list.page(1)
-    # except EmptyPage:
-    #     posts = post_list.page(post_list.num_pages)
+    try:
+         posts = post_list.page(page)
+    except PageNotAnInteger:
+         posts = post_list.page(1)
+    except EmptyPage:
+         posts = post_list.page(post_list.num_pages)
 
-    # return render(request,'index.html', {"post_list": posts})
-    return render(request, "index.html")
+    return render(request,'index.html', {"post_list": posts})
 
 def fetch(request):
     post_list= Paginator(Post.objects.all().order_by('-created_on'),2)
