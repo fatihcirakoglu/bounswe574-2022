@@ -117,7 +117,6 @@ def postdetail(request, slug):
         
     post = Post.objects.get(slug=slug)
     comments=Comment.objects.filter(post=post, parent__isnull=True).order_by('-id')
-   
     post.read_count += 1
     post.save()
 
@@ -306,13 +305,15 @@ def posts_by_tag(request, slug):
     tags = Tag.objects.filter(slug=slug).values_list('name', flat=True)
     posts = Post.objects.filter(tags__name__in=tags)
 
-    return render(request, 'postsbytag.html', { 'posts': posts })
+    return render(request, 'postsbytag.html', { 'posts': posts,'tags':tags.first})
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
     fields = ['category', 'title', 'content', 'image', 'tags']
     template_name = 'post_form.html'
+    redirect_field_name = "redirect"  # added
+    redirect_authenticated_user = True  # added
 
     def form_valid(self, form):
         form.instance.author = self.request.user
