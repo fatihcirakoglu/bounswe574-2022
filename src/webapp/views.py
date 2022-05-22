@@ -114,8 +114,6 @@ def fetch(request):
     return JsonResponse({"post_list": json.dumps(post_dic, default = default)})
 
 def postdetail(request, slug):
-    #if not request.user.is_authenticated:
-    #    return redirect('login')
         
     post = Post.objects.get(slug=slug)
     comments=Comment.objects.filter(post=post, parent__isnull=True).order_by('-id')
@@ -123,12 +121,15 @@ def postdetail(request, slug):
     post.read_count += 1
     post.save()
 
-    Favourites,_ = FavouritePost.objects.get_or_create(user=request.user)
+    if request.user.is_authenticated:
+        Favourites,_ = FavouritePost.objects.get_or_create(user=request.user)
     post_in_favorites = None
-    if post in Favourites.posts.all():
-        post_in_favorites = True
-    else:
-        post_in_favorites = False
+
+    if request.user.is_authenticated:
+        if post in Favourites.posts.all():
+            post_in_favorites = True
+        else:
+            post_in_favorites = False
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST or None)
