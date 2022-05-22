@@ -19,6 +19,7 @@
 
   <h1 class="fav">Colearn Spaces You Joined </h1>
 {% for post in post_list %}
+{% if post.author != user %}
   <article class="blog">
     <h3 class="title">{{ post.title }}</h3>
     <p class="author">{{ post.author }} | {{ post.created_on }}</p>
@@ -26,6 +27,7 @@
       {{ post.content|slice:":200" }}...
     </p>
     <a href="{% url 'post_detail' post.slug %}" class="button">Read More &rarr;</a>
+    {% endif %}
   </article>
 {% endfor %}
 </div>
