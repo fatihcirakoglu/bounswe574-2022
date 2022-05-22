@@ -22,6 +22,7 @@ from django.db import IntegrityError
 from taggit.models import Tag
 from django.views.generic import UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 
 import datetime
 def default(o):
@@ -46,7 +47,7 @@ def loginUser(request):
 def logoutUser(request):
     logout(request)
     messages.info(request, "Logged out of LetsColearn")
-    return redirect('login')
+    return redirect("home")
 
 
 def signup(request):
