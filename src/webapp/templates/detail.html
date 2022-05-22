@@ -71,7 +71,10 @@
   {% if user.is_authenticated %} {% if not post_in_favorites %}
   <a class="button button-green" onclick="toggle()" data-slug="{{ post.slug }}">Join CoLearn Space</a>
   {% else %}
-  <a class="button button-red" id="del" onclick="toggle()" data-slug="{{ post.slug }}">Delete from Favourites</a>
+  <a class="button button-red" id="del" onclick="toggle()" data-slug="{{ post.slug }}">Quit CoLearn Space</a>
+  {% endif %} 
+  {% else %}
+  <a class="button button-green" href="{% url 'login' %}" onclick="toggle()" data-slug="{{ post.slug }}">Join CoLearn Space</a>
   {% endif %}
 
   {% if post.author == user %}
