@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %} LetsColearn {% endblock title %} 
+{% block content %} {% include "header.html" %} {% include "description.html" %}
+<div class="blogs">
+  <h1 class="fav">CoLearn Spaces You Created</h1>
+  {% for post in post_list %}
+    <article class="blog">
+      {% if post.author == user %}
+      <h3 class="title">{{ post.title }}</h3>
+      <p class="author">{{ post.author }} | {{ post.created_on }}</p>
+      <p class="post">
+        {{ post.content|slice:":200" }}...
+      </p>
+      <div>
+        <a href="{% url "post-update" post.slug %}" class="button">UPDATE &rarr;</a>  <a href="{% url 'post_detail' post.slug %}" class="button">Read More &rarr;</a>
+      </div>
+      {% endif %}
+    </article>
+  {% endfor %}
+
+  <h1 class="fav">Colearn Spaces You Joined </h1>
+{% for post in post_list %}
+  <article class="blog">
+    <h3 class="title">{{ post.title }}</h3>
+    <p class="author">{{ post.author }} | {{ post.created_on }}</p>
+    <p class="post">
+      {{ post.content|slice:":200" }}...
+    </p>
+    <a href="{% url 'post_detail' post.slug %}" class="button">Read More &rarr;</a>
+  </article>
+{% endfor %}
+</div>
+{% endblock %}
