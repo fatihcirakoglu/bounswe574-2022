@@ -1,7 +1,27 @@
-{% extends "base.html" %}
-{% block title %}
-    About Us
-{% endblock %}
+{% extends "base.html" %} {% block title %} About LetsColearn {% endblock title %}
 {% block content %}
-    <p>About page for Swe-573 Django Project.</p>
-{% endblock %}
+<!-- Add header -->
+{% include "header.html" %}
+<!-- end header -->
+<!-- Adding blogs content -->
+<section>
+  <div class="about">
+    <ul>
+      <li>
+        LetsColearn is a colearning website that allows users to post their knowledge
+        and share their thoughts with the commnuity who are joined the specific colarnin space.
+        We provide a platform to writers of all domain to freely express their views and content publicly
+        without the fear of being judged.
+      </li>
+      <li>
+        Blogs of all fields including technical, health & fitness, recipes,
+        sports, travelling, corporate sector are welcome to become a part of our
+        website.
+      </li>
+      <li>Hurry up and seek the opportunity to get featured on our page !!</li>
+    </ul>
+  </div>
+</section>
+<!-- Ending blogs content -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+{% endblock content %}
