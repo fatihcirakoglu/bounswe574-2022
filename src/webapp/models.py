@@ -1,5 +1,4 @@
 from django.db import models
-from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db.models.signals import pre_save,post_save
@@ -8,9 +7,10 @@ from django.urls import reverse
 from taggit.managers import TaggableManager
 from PIL import Image
 from django.dispatch import receiver
-from django.urls import  reverse
-# Create your models here.""" 
+from ckeditor.fields import RichTextField
 
+
+# Create your models here.
 class TagDict(models.Model):
     tag = models.CharField(max_length=100)
     count = models.IntegerField(default=0)
@@ -41,7 +41,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=200, unique=True, editable=False)
     author = models.ForeignKey(User, on_delete= models.CASCADE)
     updated_on = models.DateTimeField(auto_now= True)
-    content = models.TextField()
+    content = RichTextField(blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     read_count = models.IntegerField(default=0, editable=False)
     read_time = models.IntegerField(default=0, editable=False)
