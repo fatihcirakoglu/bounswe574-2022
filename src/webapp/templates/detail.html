@@ -66,8 +66,10 @@
 
   <p class="post">{{ post.content | safe }}</p>
 
-  {% if not post_in_favorites %}
-  <a class="button button-green" onclick="toggle()" data-slug="{{ post.slug }}">Add To Favourites</a>
+
+
+  {% if user.is_authenticated %} {% if not post_in_favorites %}
+  <a class="button button-green" onclick="toggle()" data-slug="{{ post.slug }}">Join CoLearn Space</a>
   {% else %}
   <a class="button button-red" id="del" onclick="toggle()" data-slug="{{ post.slug }}">Delete from Favourites</a>
   {% endif %}
