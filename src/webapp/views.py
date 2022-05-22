@@ -45,7 +45,7 @@ def loginUser(request):
 
 def logoutUser(request):
     logout(request)
-    messages.info(request, "Logged out of Bloggit")
+    messages.info(request, "Logged out of LetsColearn")
     return redirect('login')
 
 
