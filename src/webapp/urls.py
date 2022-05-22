@@ -1,9 +1,11 @@
 from . import views
 from django.urls import path
 from .views import PostLikeToggle , PostLikeAPIToggle,ProfileUpdateView,ProfileView,PostUpdateView
+from django.urls import include, re_path as url
 
 urlpatterns = [
     path('login/', views.loginUser, name='login'),
+    url(r"^accounts/login/$", views.loginUser, name="login"),
     path('signup/', views.signup, name='signup'),
     path('logout/', views.logoutUser, name='logout'),
     path('favorites/', views.favorites, name='favorites'),
