@@ -56,19 +56,7 @@ def post_detail(request,id):
     return render(request, 'webapp/post_detail.html', {'post': post, 'type': t.categories})
 
 def search(request):
-
-    results = []
-
-    if request.method == "GET":
-
-        query = request.GET.get('search')
-        
-        if not query :
-            query = ""
-        #if query == '':
-
-        #    query = ""
-        
-        results = Post.objects.filter(Q(title__icontains=query) | Q(body__icontains=query))
-
-    return render(request, 'webapp/search.html', {'query': query, 'results': results})
+    query = request.GET.get('query', None)
+    allposts=Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
+    params={'post_list':allposts,}
+    return render(request,'search.html',params)
