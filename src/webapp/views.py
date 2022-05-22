@@ -114,8 +114,8 @@ def fetch(request):
     return JsonResponse({"post_list": json.dumps(post_dic, default = default)})
 
 def postdetail(request, slug):
-    if not request.user.is_authenticated:
-        return redirect('login')
+    #if not request.user.is_authenticated:
+    #    return redirect('login')
         
     post = Post.objects.get(slug=slug)
     comments=Comment.objects.filter(post=post, parent__isnull=True).order_by('-id')
