@@ -1,0 +1,21 @@
+version: '3'
+services:
+  web:
+    image: coelarnapp:1.0
+    build: .
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - SECRETKEY=&w!-%qsbcb_7kdo^)roirk)evgkhu1vn(e8tztam-*+n1b#)=2
+      - ALLOWEDHOST=*
+      - DB_NAME=webappdb
+      - DB_USER=webappdbuser
+      - DB_PASSWORD=swe573.
+      - DB_HOST=localhost
+      - DB_PORT=3306
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./src:/app
+      - /var/run/mysqld/mysqld.sock:/run/mysqld/mysqld.sock
