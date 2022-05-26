@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block title %} LetsColearn {% endblock title %} 
+{% block content %} {% include "header.html" %} {% include "description.html" %}
+
+<div class="blogs">
+    <h1 class="title" style="padding-left: 3rem;">Courses for Tag #{{tags}}</h1>
+    {% for course in courses %}
+        <article class="blog">
+            <h3 class="title">{{ course.title }}</h3>
+            <a href="{% url 'course_detail' course.slug %}" class="button">Goto Space →</a>
+        </article>
+    {% endfor %}
+</div>
+
+{% endblock content %}

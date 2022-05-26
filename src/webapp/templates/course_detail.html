@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <br/><br/>
+
+    <h2 class="text-center"> {{course.body}}</h2>
+
+     <hr>
+
+     <p class="lead">Author: {{course.author}} </p>
+
+     <p class="lead">Type: {{course.categories}} </p>
+
+     <p class="lead">Publication: {{course.publish_date}} </p>
+
+     <form action="{% url 'course_list' %}" class="form-inline" method="get">
+
+     <button type="submit" class="btn btn-primary btn-lg mb-2">Back</button>
+
+     </form>
+
+  </div>
+
+  {% endblock %}
