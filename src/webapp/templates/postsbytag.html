@@ -6,7 +6,7 @@
     {% for post in posts %}
         <article class="blog">
             <h3 class="title">{{ post.title }}</h3>
-            <a href="{% url 'post_detail' post.slug %}" class="button">"Read More  →"</a>
+            <a href="{% url 'post_detail' post.slug %}" class="button">Read More →</a>
         </article>
     {% endfor %}
 </div>
