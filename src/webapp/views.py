@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import generic
-from .models import Post, FavouritePost,Profile, Comment
+from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -86,7 +86,50 @@ def postlist(request):
 
     return render(request,'index.html', {"post_list": posts})
 
-def fetch(request):
+
+def courselist(request):
+    
+    course_list= Paginator(Course.objects.all().order_by('-created_on'),2)
+    page= request.GET.get('page')
+
+    try:
+         courses = course_list.page(page)
+    except PageNotAnInteger:
+         courses = course_list.page(1)
+    except EmptyPage:
+         courses = course_list.page(course_list.num_pages)
+
+    return render(request,'index.html', {"course_list": courses})
+
+def fetch_course(request):
+    course_list= Paginator(Course.objects.all().order_by('-created_on'),2)
+    page=request.POST.get("page")
+
+    try:
+        courses = course_list.page(page)
+    except PageNotAnInteger:
+        courses = course_list.page(1)
+    except EmptyPage:
+        courses = course_list.page(course_list.num_pages)
+
+    course_dic = {
+        "number": courses.number,
+        "has_next": courses.has_next(),
+        "has_previous": courses.has_previous(),
+        "courses": []
+    }
+
+    for i in course_list.page(page):
+        course_dic["courses"].append(i.__dict__)
+    
+    for i in course_dic["courses"]:
+        i["author"]=User.objects.get(id = i.get("author_id")).username
+
+   
+    return JsonResponse({"course_list": json.dumps(course_dic, default = default)})
+
+
+def fetch_post(request):
     post_list= Paginator(Post.objects.all().order_by('-created_on'),2)
     page=request.POST.get("page")
 
@@ -120,15 +163,6 @@ def postdetail(request, slug):
     post.read_count += 1
     post.save()
 
-    if request.user.is_authenticated:
-        Favourites,_ = FavouritePost.objects.get_or_create(user=request.user)
-    post_in_favorites = None
-
-    if request.user.is_authenticated:
-        if post in Favourites.posts.all():
-            post_in_favorites = True
-        else:
-            post_in_favorites = False
 
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST or None)
@@ -160,23 +194,43 @@ def postdetail(request, slug):
     else:
         comment_form = CommentForm()
 
-    return render(request, 'detail.html', {'post': post, 'post_in_favorites': post_in_favorites,
+    return render(request, 'postdetail.html', {'post': post,
                                    'comments' : comments, 'comment_form' : comment_form})
 
+def coursedetail(request, slug):
+        
+    course = Course.objects.get(slug=slug)
+    posts = Post.objects.filter(course_id=course.id).order_by('-id')
+    course.read_count += 1
+    course.save()
+
+    if request.user.is_authenticated:
+        Favourites,_ = FavouriteCourse.objects.get_or_create(user=request.user)
+    course_in_favorites = None
+
+    if request.user.is_authenticated:
+        if course in Favourites.courses.all():
+            course_in_favorites = True
+        else:
+            course_in_favorites = False
+    
+
+    return render(request, 'coursedetail.html', {'course': course, 'course_in_favorites': course_in_favorites,'posts' : posts})
 
 def Favorites(request, slug):
     if not request.user.is_authenticated:
         return redirect('login')
 
-    user = request.user
-    Favourites,_ = FavouritePost.objects.get_or_create(user=user)
+    Favourites,_ = FavouriteCourse.objects.get_or_create(user=request.user)
+    try:
+        course = Course.objects.get(slug=slug)
+    except Course.DoesNotExist:
+        course = None
 
-    post = Post.objects.get(slug=slug)
-
-    if post not in Favourites.posts.all():
-        Favourites.posts.add(post)
+    if course not in Favourites.courses.all():
+        Favourites.courses.add(course)
     else:
-        Favourites.posts.remove(post)
+        Favourites.courses.remove(course)
     
     Favourites.save()
     
@@ -185,9 +239,9 @@ def Favorites(request, slug):
 
 def favorites(request):
     user = request.user
-    FavPosts,_ = FavouritePost.objects.get_or_create(user=user)
+    FavCourses,_ = FavouriteCourse.objects.get_or_create(user=user)
 
-    return render(request, 'favourites.html', { 'post_list': FavPosts.posts.all(), "favorites": True})
+    return render(request, 'favourites.html', { 'course_list': FavCourses.courses.all(), "favorites": True})
 
     
 def about(request):
@@ -196,8 +250,8 @@ def about(request):
 
 def search(request):
     query = request.GET.get('query', None)
-    allposts=Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
-    params={'post_list':allposts,}
+    allcourses=Course.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
+    params={'course_list':allcourses,}
     return render(request,'search.html',params)
 
 
@@ -214,12 +268,56 @@ class PostLikeToggle(RedirectView):
                 obj.likes.add(user)
         return url_
 
+class CourseLikeToggle(RedirectView):
+    def get_redirect_url(self,*args, **kwargs):
+        id_ = self.kwargs.get("slug")
+        obj = get_object_or_404(Course,slug=id_)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in obj.likes.all():
+                 obj.likes.remove(user)
+            else:
+                obj.likes.add(user)
+        return url_
+
 class PostLikeAPIToggle(APIView):
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, slug=None,format=None):
         obj = get_object_or_404(Post,slug=slug)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        updated = False
+        liked = False
+        verb = None
+        if user.is_authenticated:
+            if user in obj.likes.all():
+                liked = False
+                verb = 'Like'
+                obj.likes.remove(user)
+                count = obj.likes.all().count()
+            else:
+                liked = True
+                verb = 'Unlike'
+                obj.likes.add(user)
+                count = obj.likes.all().count()
+            updated = True
+        data = {
+            "updated":updated,
+            "liked":liked,
+            "count":count,
+            "verb":verb
+        }
+        return Response(data)
+
+class CourseLikeAPIToggle(APIView):
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, slug=None,format=None):
+        obj = get_object_or_404(Course,slug=slug)
         url_ = obj.get_absolute_url()
         user = self.request.user
         updated = False
@@ -301,17 +399,44 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
 
 
+class CourseUpdateView(LoginRequiredMixin, UpdateView):
+    model = Course
+    fields = ['title', 'content','image','tags']
+
+    template_name ='course_form.html'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
 def posts_by_tag(request, slug):
     tags = Tag.objects.filter(slug=slug).values_list('name', flat=True)
     posts = Post.objects.filter(tags__name__in=tags)
 
     return render(request, 'postsbytag.html', { 'posts': posts,'tags':tags.first})
 
+def courses_by_tag(request, slug):
+    tags = Tag.objects.filter(slug=slug).values_list('name', flat=True)
+    courses = Course.objects.filter(tags__name__in=tags)
+
+    return render(request, 'coursesbytag.html', { 'courses': courses,'tags':tags.first})
+
 
 class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
-    fields = ['category', 'title', 'content', 'image', 'tags']
+    fields = ['course', 'title', 'content', 'image', 'tags']
     template_name = 'post_form.html'
+    redirect_field_name = "redirect"  # added
+    redirect_authenticated_user = True  # added
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+class CourseCreateView(LoginRequiredMixin,CreateView):
+    model = Course
+    fields = ['category', 'title', 'content', 'image', 'tags']
+    template_name = 'course_form.html'
     redirect_field_name = "redirect"  # added
     redirect_authenticated_user = True  # added
 

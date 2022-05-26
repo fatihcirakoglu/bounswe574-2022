@@ -4,11 +4,11 @@ function toggle() {
     if (btn.classList.contains("button-green")) {
       btn.classList.remove("button-green");
       btn.classList.add("button-red");
-      btn.innerHTML = "Quit CoLearn Space";
+      btn.innerHTML = "Quit Space";
     } else {
       btn.classList.remove("button-red");
       btn.classList.add("button-green");
-      btn.innerHTML = "Join CoLearn Space";
+      btn.innerHTML = "Join Space";
     }
   }
 }
@@ -18,7 +18,7 @@ $(".button").click(function () {
   slug = $(this).attr("data-slug");
   $.ajax({
     type: "GET",
-    url: `/detail/${slug}/Favourites`,
+    url: `/coursedetail/${slug}/Favourites`,
     success: function (data) {
       console.log("Success");
     },
