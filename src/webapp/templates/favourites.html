@@ -9,9 +9,6 @@
         {% if course.author == user %}
         <h3 class="title">{{ course.title }}</h3>
         <p class="author">{{ course.author }} | {{ course.created_on }}</p>
-        <p class="post">
-          {{ course.content|slice:":200" }}...
-        </p>
         <div>
           <a href="{% url "course-update" course.slug %}" class="button">UPDATE &rarr;</a>  <a href="{% url 'course_detail' course.slug %}" class="button">Goto Space &rarr;</a>
         </div>
@@ -28,9 +25,6 @@
           <article class="blog">
             <h3 class="title">{{ course.title }}</h3>
             <p class="author">{{ course.author }} | {{ course.created_on }}</p>
-            <p class="post">
-              {{ course.content|slice:":200" }}...
-            </p>
             <a href="{% url 'course_detail' course.slug %}" class="button">Goto Space &rarr;</a>
         {% endif %}
           </article>

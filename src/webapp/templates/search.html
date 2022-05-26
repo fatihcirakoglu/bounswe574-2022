@@ -6,7 +6,6 @@
   <article class="blog">
     <h3 class="title">{{ course.title }}</h3>
     <p class="author">{{ course.author }} | {{ course.created_on }}</p>
-    <p class="course">{{ course.content|slice:":200" }}...</p>
     <a href="{% url 'course_detail' course.slug %}" class="button"
       >Goto Space More &rarr;</a
     >
