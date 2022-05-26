@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    image: coelarnapp:1.0
+    build: .
+    command: >
+      sh -c "python manage.py makemigrations && \
+             python manage.py migrate && \
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - SECRETKEY=&w!-%qsbcb_7kdo^)roirk)evgkhu1vn(e8tztam-*+n1b#)=2
+      - ALLOWEDHOST=ec2-52-87-173-228.compute-1.amazonaws.com
+      - DB_NAME=webappdb
+      - DB_USER=webappdbuser
+      - DB_PASSWORD=swe573swe.
+      - DB_HOST=webappdb.cxj0nj6y8us5.us-east-1.rds.amazonaws.com
+      - DB_PORT=3306
+    ports:
+      - "80:8000"
+
+    volumes:
+      - ./src:/app
+      - /var/lib/mysql/mysql.sock:/run/mysqld/mysqld.sock
