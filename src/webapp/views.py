@@ -248,6 +248,10 @@ def about(request):
     context={}
     return render(request,'about.html',context=context)
 
+def faq(request):
+    context={}
+    return render(request,'faq.html',context=context)
+
 def search(request):
     query = request.GET.get('query', None)
     allcourses=Course.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))

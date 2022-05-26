@@ -26,6 +26,7 @@ urlpatterns = [
     path('profile-update/', ProfileUpdateView.as_view(), name='profile-update'),
     path('profile/', ProfileView.as_view(), name='profile'),
     path('about/',views.about,name='about'),
+    path('faq/',views.faq,name='faq'),
     path('search/',views.search,name='search'),
     path('posttags/<slug:slug>/', views.posts_by_tag, name='posts_by_tag'),
     path('coursetags/<slug:slug>/', views.courses_by_tag, name='courses_by_tag'),

@@ -22,13 +22,13 @@
       <li><a href="{% url 'favorites' %}" id="fav">ColearnSpaces</a></li>
       <li><a href="{% url 'create_course' %}">CreateSpace</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
-      <li><a href="{% url 'about' %}">FAQs</a></li>
+      <li><a href="{% url 'faq' %}">FAQs</a></li>
       <li><a href="{% url 'logout' %}">Logout</a></li>
       {% else %}
       <li><a href="{% url 'login' %}">Login</a></li>
       <li><a href="{% url 'create_course' %}">CreateSpace</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
-      <li><a href="{% url 'about' %}">FAQs</a></li>
+      <li><a href="{% url 'faq' %}">FAQs</a></li>
       <li><a href="{% url 'signup' %}">Signup</a></li>
       {% endif %}
 
