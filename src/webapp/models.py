@@ -19,7 +19,7 @@ class TagDict(models.Model):
         return self.tag
  
 
-class Post(models.Model):
+class Course(models.Model):
     CATEGORY_CHOICES = ( 
         ("1", "Programming/Technology"), 
         ("2", "Health/Fitness"), 
@@ -37,6 +37,55 @@ class Post(models.Model):
         choices = CATEGORY_CHOICES, 
         default = '1'
         ) 
+    title = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, editable=False)
+    author = models.ForeignKey(User, on_delete= models.CASCADE)
+    updated_on = models.DateTimeField(auto_now= True)
+    content = RichTextField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
+    read_count = models.IntegerField(default=0, editable=False)
+    read_time = models.IntegerField(default=0, editable=False)
+    likes = models.ManyToManyField(User, blank=True, related_name='course_likes')
+    image = models.ImageField(null=True, blank=True, upload_to='images/')
+    tags = TaggableManager(blank=True)
+
+    class Meta:
+        ordering = ['-created_on']
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title, allow_unicode=True)
+        super().save(*args, **kwargs)
+
+        for tag in self.tags.all():
+            tag_dict,_ = TagDict.objects.get_or_create(tag=str(tag))
+            tag_dict.count += 1
+            tag_dict.save()
+
+    def get_absolute_url(self):
+        return reverse('course_detail', kwargs={"slug":self.slug})
+
+    def get_like_url(self):
+        return reverse('course-like-toggle', kwargs={"slug":self.slug})
+    
+    def get_api_like_url(self):
+        return reverse('course-like-api-toggle', kwargs={"slug":self.slug})
+        
+
+
+def pre_save_course_receiver(sender, instance, *args, **kwargs):
+    if instance.content:
+        instance.read_time = get_read_time(instance.content)
+
+pre_save.connect(pre_save_course_receiver, sender=Course)
+
+
+class Post(models.Model):
+    course = models.ForeignKey(Course,null=True,on_delete=models.CASCADE,related_name='posts')
+    #category = course.get_attname()
+    #course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name='posts')
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, editable=False)
     author = models.ForeignKey(User, on_delete= models.CASCADE)
@@ -68,10 +117,10 @@ class Post(models.Model):
         return reverse('post_detail', kwargs={"slug":self.slug})
 
     def get_like_url(self):
-        return reverse('like-toggle', kwargs={"slug":self.slug})
+        return reverse('post-like-toggle', kwargs={"slug":self.slug})
     
     def get_api_like_url(self):
-        return reverse('like-api-toggle', kwargs={"slug":self.slug})
+        return reverse('post-like-api-toggle', kwargs={"slug":self.slug})
 
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
@@ -81,6 +130,10 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_post_receiver, sender=Post)
 
 
+
+class FavouriteCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    courses = models.ManyToManyField(Course)
 
 class FavouritePost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
