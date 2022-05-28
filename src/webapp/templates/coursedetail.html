@@ -97,6 +97,15 @@
   <div class="blogs"><article class="blog"><p class="course">{{ course.content | safe }}</p></article></div>
 
   <div class="blogs">
+    <h1 class="title" style="padding-left: 3rem;">Users In Course #{{tags}}</h1>
+    {% for x in FavouritesUsers %}
+    <a>
+      <h3 style="display: inline;padding-left: 3rem;"><span class="badge badge-primary">{{ x.user }}</span></h3>
+    </a>
+    {% endfor %}
+  </div>
+
+  <div class="blogs">
     <h1 class="title" style="padding-left: 3rem;">Posts In Course #{{tags}}</h1>
     {% for post in posts %}
         <article class="blog">

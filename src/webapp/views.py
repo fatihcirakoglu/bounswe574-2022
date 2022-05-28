@@ -213,9 +213,10 @@ def coursedetail(request, slug):
             course_in_favorites = True
         else:
             course_in_favorites = False
-    
 
-    return render(request, 'coursedetail.html', {'course': course, 'course_in_favorites': course_in_favorites,'posts' : posts})
+    FavouritesUsers=FavouriteCourse.objects.filter(Q(courses=course.id) | Q(courses=course.id))
+
+    return render(request, 'coursedetail.html', {'course': course, 'course_in_favorites': course_in_favorites,'posts' : posts,"FavouritesUsers":FavouritesUsers})
 
 def Favorites(request, slug):
     if not request.user.is_authenticated:
