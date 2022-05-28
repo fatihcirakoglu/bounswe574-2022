@@ -240,8 +240,9 @@ def Favorites(request, slug):
 def favorites(request):
     user = request.user
     FavCourses,_ = FavouriteCourse.objects.get_or_create(user=user)
+    usercourses=Course.objects.filter(Q(author=user) | Q(author=user))
 
-    return render(request, 'favourites.html', { 'course_list': FavCourses.courses.all(), "favorites": True})
+    return render(request, 'favourites.html', { 'course_list': FavCourses.courses.all(), "favorites": True,"usercourses":usercourses})
 
     
 def about(request):
