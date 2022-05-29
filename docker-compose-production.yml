@@ -15,6 +15,8 @@ services:
       - DB_PASSWORD=swe573swe.
       - DB_HOST=webappdb.cxj0nj6y8us5.us-east-1.rds.amazonaws.com
       - DB_PORT=3306
+      - EMAIL_HOST_USER=fatihcirak@gmail.com
+      - EMAIL_HOST_PASSWORD=IHJvrNcO6jYPZqGn
     ports:
       - "80:8000"
 
