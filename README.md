@@ -16,8 +16,6 @@ This project will be developed as a part of Swe-573 course and will be conducted
 Features will be listed after topic clarification.
 
 
-## Prerequisites
-- Will be defined later.
  
 ## Clone
 
@@ -25,21 +23,31 @@ Features will be listed after topic clarification.
  
 ## Build
 - Just clone the repo on your Linux environment and run below command in the folder.
- ```
 
- ```
-
-## Installation
-
-- All the `code` required to get started
-```
-
-```
+ Debugging Application in Local Environment:  
+-	Clone repository from git@github.com:fatihcirakoglu/bounswe573-2022.git
+-	Install and create a MySQL database with credendials below.
+  - DB_NAME=webappdb
+  - DB_USER=webappdbuser
+  - DB_PASSWORD=swe573.
+- Go to main project folder where docker compose files reside
+- Then run: $ docker-compose -f  docker-compose.yml up
+-	Go to any explorer and view: http://localhost
 
 ## Setup & Deployment
-```
+Viewing Application In AWS machine: 
+By using secret key that is provided during creation of machine instance, you can login with below credentials to AWS E2C machine.
 
-```
+$ ssh  -i  djangokey.pem  ec2-user@52.87.173.228
+
+You will be connected to AWS E2C mahine terminal, just go to 
+$ cd /home/ec2-user/production/bounswe573-2022
+Then run:
+$ docker-compose -f  docker-compose-production.yml up
+
+Finally project will run and you can view project page with below link:
+URI of Project:  http://ec2-52-87-173-228.compute-1.amazonaws.com/
+
 ## FAQ
 
 ```
