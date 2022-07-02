@@ -23,6 +23,8 @@ Screenshots of all usecases are like below.
 
 ![4](https://user-images.githubusercontent.com/33651899/176979827-e46c8770-139d-48f9-aa14-93d2fe0d8e05.JPG)
 
+![12](https://user-images.githubusercontent.com/33651899/176979836-018eeefd-77fd-4e38-94e8-b2e287368d1b.JPG)
+
 ![5](https://user-images.githubusercontent.com/33651899/176979828-d84b53a4-81b3-43fe-b4a4-09a77bd7d296.JPG)
 
 ![6](https://user-images.githubusercontent.com/33651899/176979829-56b79af7-d6b6-4bba-aff1-0c6ea67aef90.JPG)
@@ -36,8 +38,6 @@ Screenshots of all usecases are like below.
 ![10](https://user-images.githubusercontent.com/33651899/176979834-4a1c6672-0eb0-433f-8298-8d68c881ed27.JPG)
 
 ![11](https://user-images.githubusercontent.com/33651899/176979835-30ef0e4a-89ca-468f-9769-67ec87315fce.JPG)
-
-![12](https://user-images.githubusercontent.com/33651899/176979836-018eeefd-77fd-4e38-94e8-b2e287368d1b.JPG)
 
 ![13](https://user-images.githubusercontent.com/33651899/176979837-178b15d1-84c5-426f-b200-93d6d4b6c6d4.JPG)
 
