@@ -13,7 +13,19 @@ This project will be developed as a part of Swe-573 course and will be conducted
 - Deployment.
 
 ## General Features of Application: 
+You will be directed to home page of LetsColearn application and you can view contents freely without logging in. 
+You need to login to join space, create post, ask question about content and like posts/spaces. 
+Before logging in, you need to signup via sign-up page, you need to provide username, password and email. You will use username and password information during further logins. 
+After login, you will see extra “ColearnSpaces” section, this page shows the colearn spaces that you created and joined. 
+Also “CreateWorkspace” link will be active, and when you click it, you will be directed to form page for creating colearn space. There are five parameters which are category, title, content, image and tags. Category is requested for only DB query purposes, so it is not being shown to users. All colearn space and post contents are being grouped under tags. Tags could be entered by comma separated. Inside content, pictures, links, vidoes could be embedded via text editor. 
+After creation of coelearn spcare, you will be able to see users that are joined to space, like counts, view counts etc. Also post creation will be activated. 
+Each logged in user can join colearn spaces freely and create posts under these spaces. Also, every user can ask questions under posts. 
+
 Screenshots of all usecases are like below.
+
+![14](https://user-images.githubusercontent.com/33651899/176979839-4cbf02fe-866f-4a61-b361-51e35a2b6646.JPG)
+
+![15](https://user-images.githubusercontent.com/33651899/176979840-f33470b8-808d-48d9-91b3-fb0ccb3d585f.JPG)
 
 ![1](https://user-images.githubusercontent.com/33651899/176979823-72abd6ca-f30c-4e60-b1f9-ffdeb75211b0.JPG)
 
@@ -41,12 +53,15 @@ Screenshots of all usecases are like below.
 
 ![13](https://user-images.githubusercontent.com/33651899/176979837-178b15d1-84c5-426f-b200-93d6d4b6c6d4.JPG)
 
-![14](https://user-images.githubusercontent.com/33651899/176979839-4cbf02fe-866f-4a61-b361-51e35a2b6646.JPG)
+![17](https://user-images.githubusercontent.com/33651899/176980592-819f6846-edb2-48d2-a725-8f62d7872037.JPG)
 
-![15](https://user-images.githubusercontent.com/33651899/176979840-f33470b8-808d-48d9-91b3-fb0ccb3d585f.JPG)
+![18](https://user-images.githubusercontent.com/33651899/176980595-d906dc02-28de-408f-87bf-c388175120f9.JPG)
+
+![19](https://user-images.githubusercontent.com/33651899/176980598-b5f2a067-f74f-4097-a4eb-c2093b58917f.JPG)
+
+![20](https://user-images.githubusercontent.com/33651899/176980599-7a47254a-fe87-4986-9134-c9ea407ab787.JPG)
 
 ![16](https://user-images.githubusercontent.com/33651899/176979841-d0619505-ab7d-4509-b637-377fa6f4e7bc.JPG)
-
  
 ## Clone
 
