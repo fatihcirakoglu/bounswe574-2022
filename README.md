@@ -13,7 +13,7 @@ This project will be developed as a part of Swe-573 course and will be conducted
 - Deployment.
 
 ## General Features of Application: 
-Features will be listed after topic clarification.
+Screenshots of all usecases are like below.
 
 ![1](https://user-images.githubusercontent.com/33651899/176979823-72abd6ca-f30c-4e60-b1f9-ffdeb75211b0.JPG)
 
