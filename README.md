@@ -1,4 +1,4 @@
-# SWE-573 Project
+# SWE-574 Project
 This project will be developed as a part of Swe-573 course and will be conducted by applying all software project life cycle steps like below. 
 
 - Requirements elicitation
