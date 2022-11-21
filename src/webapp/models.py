@@ -171,3 +171,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment {} by {}'.format(self.body, self.name)
+
+
+class Report(models.Model):
+    course = models.ForeignKey(Course,null=True,on_delete=models.CASCADE,related_name='reports')
+    title = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, editable=False)
+    author = models.ForeignKey(User, on_delete= models.CASCADE)
+    content = RichTextField(blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)
