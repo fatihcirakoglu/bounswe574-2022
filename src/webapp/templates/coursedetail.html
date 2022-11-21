@@ -62,6 +62,10 @@
       <a class="btn btn-info btn-lg"  href="{% url "course-update" course.slug %}">Update Space</a>
     {% else %}
     {% endif %}
+    {% if course.author == user %}
+      <a class="btn btn-info btn-lg"  href="{% url "course-update" course.slug %}">Report Space</a>
+    {% else %}
+    {% endif %}
  
   </div>
 
