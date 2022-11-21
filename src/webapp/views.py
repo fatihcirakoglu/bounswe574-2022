@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import generic
-from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment
+from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment, Report
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -449,3 +449,10 @@ class CourseCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+class SpaceReportView(LoginRequiredMixin, CreateView):
+    model = Report
+    fields = ['course', 'title', 'content']
+    template_name = 'report_space.html'
+    pass
+    

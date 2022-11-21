@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %} LetsColearn {% endblock title %} 
+{% block content %} {% include "header.html" %}
+  <div class="description">
+    <h2>Report CoLearn Space</h2>
+    <p>Please describe why the space is incovenient..</p>
+  </div>
+    <br><br><br>
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <br>
+            <div class="form-group">
+                <button class="button" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
