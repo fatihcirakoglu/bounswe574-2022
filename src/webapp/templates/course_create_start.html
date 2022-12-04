@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block title %} LetsColearn {% endblock title %} 
+{% block content %} {% include "header.html" %} 
+<div class="cred">
+  <h2>LearningSpace Keyword</h2>
+  <form action="{% url 'create_course_start' %}" method="POST">
+    {% csrf_token %}
+    
+    <div class="input">
+      <input type="text" name="tagkeyword" placeholder="LearningSpace Keyword" autocomplete="off" required/>
+    </div>
+    <button type="submit" id="submit-btn">Continue</button>
+  </form>
+
+</div>
+{% endblock content %}
