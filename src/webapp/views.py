@@ -23,6 +23,7 @@ from taggit.models import Tag
 from django.views.generic import UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+import requests
 
 import datetime
 def default(o):
@@ -449,3 +450,39 @@ class CourseCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class EntityManager():
+    def search_wikidata(keyword: str):
+        API_ENDPOINT = "https://www.wikidata.org/w/api.php"
+        params = {
+            'action': 'wbsearchentities',
+            'format': 'json',
+            'language': 'en',
+            'search': keyword
+        }
+        search_result = requests.get(API_ENDPOINT, params = params)
+        search_result = search_result.json()['search']
+        if len(search_result) == 0:
+            return (("1", 'No result'))
+        formatted_search_result = (("1", search_result[0]['description']),)
+        for index in range(1,len(search_result)):
+            formatted_search_result = (*formatted_search_result, (str(index+1), search_result[index]['description']))
+        print(formatted_search_result)
+        return formatted_search_result
+
+def CourseCreateStart(request):
+    print("CourseCreateStart girildi")
+    if request.method == 'POST':
+        tagkeyword = request.POST.get("tagkeyword")
+        print("CourseCreateStart girildi, tagkeyword:" + tagkeyword )
+        if (tagkeyword):
+            try:
+                EntityManager.search_wikidata(tagkeyword)
+                #wikidata
+                return redirect("create_course")
+            except IntegrityError:
+                messages.info(request, "Try different keyword")
+                return render(request, "course_create_start.html")
+        return redirect('course_create_start')
+    return render(request, "course_create_start.html")
