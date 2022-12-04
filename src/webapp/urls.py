@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path
-from .views import CourseLikeToggle,CourseLikeAPIToggle,PostLikeToggle,PostLikeAPIToggle,ProfileUpdateView,ProfileView,PostUpdateView, CourseUpdateView
+from .views import CourseLikeToggle,CourseLikeAPIToggle,PostLikeToggle,PostLikeAPIToggle,ProfileUpdateView,ProfileView,PostUpdateView, CourseUpdateView, CourseCreateStart
 from django.urls import include, re_path as url
 
 urlpatterns = [
@@ -12,6 +12,7 @@ urlpatterns = [
     path('', views.courselist, name='home'),
     path('blog/create', views.PostCreateView.as_view(), name='create_blog'),
     path('course/create', views.CourseCreateView.as_view(), name='create_course'),
+    path('course/createstart', views.CourseCreateStart, name='create_course_start'),
     path('post/like/<slug:slug>/', PostLikeToggle.as_view(), name='post-like-toggle'),
     path('postapi/like/<slug:slug>/', PostLikeAPIToggle.as_view(), name='post-like-api-toggle'),
     path('course/like/<slug:slug>/', CourseLikeToggle.as_view(), name='course-like-toggle'),
