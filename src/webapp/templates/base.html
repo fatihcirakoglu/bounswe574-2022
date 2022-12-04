@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'annotator.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'annotator.touch.css' %}" />
 
     <link
       rel="stylesheet"
@@ -16,10 +18,10 @@
       crossorigin="anonymous"
     />
     <title>{% block title %} {% endblock title %}</title>
-    <link rel="stylesheet" href="{% static "styles.css" %}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="{% static 'font-awesome.css' %}" />
   </head>
-  <body>
+  <body id="content">
     {% block content %} {% endblock content %}
     <div>
       {% for message in messages %}
@@ -67,6 +69,41 @@
           });
         }
       });
+    </script>
+    <script src="{% static 'jquery.js' %}"></script>
+    <script src="{% static 'highlighter.js' %}"></script>
+    <script src="{% static 'annotator-full.min.js' %}"></script>
+    <script src="{% static 'annotator.touch.min.js' %}"></script>
+    <script src="{% static 'annotator.offline.min.js' %}"></script>
+    <script>
+      jQuery("#content").annotator().annotator('addPlugin', 'Touch', {
+        force: location.search.indexOf('force') > -1,
+        useHighlighter: location.search.indexOf('highlighter') > -1
+      });
+
+      jQuery("#content").annotator().annotator('addPlugin', 'Offline', {
+        online:  function () {
+          jQuery("#status").text("Online");
+        },
+        offline: function () {
+          jQuery("#status").text("Offline");
+        }    });
+
+      jQuery("#clear-storage").click(function () {
+        if (annotator) {
+          annotator.plugins.Offline.store.clear()
+        }
+      });
+
+      if (!Annotator.Plugin.Touch.isTouchDevice()) {
+        if (location.search.indexOf('force') > -1) {
+          jQuery("body").prepend('<p><a href="./index.html">Disable Plugin in Desktop Browser</a></p>');
+        } else {
+          jQuery("body").prepend('<p><a href="./index.html?force">Enable Plugin in Desktop Browser</a></p>');
+        }
+      }
+
+      var annotator = jQuery("#content").data('annotator');
     </script>
   </body>
 </html>
