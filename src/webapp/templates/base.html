@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{% static "styles.css" %}">
     <link rel="stylesheet" href="{% static 'font-awesome.css' %}" />
   </head>
-  <body>
+  <body id="content">
     {% block content %} {% endblock content %}
     <div>
       {% for message in messages %}

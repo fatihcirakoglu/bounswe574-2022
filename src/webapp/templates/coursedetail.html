@@ -29,6 +29,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{% static 'annotator.min.css' %}" />
+<!-- <link rel="stylesheet" href="{% static 'annotator.touch.css' %}" /> -->
 
 <article class="blogs">
   <div class="description">
@@ -121,4 +123,39 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="{% static 'detail.js' %}" type="text/javascript"></script>
+<script src="{% static 'jquery.js' %}"></script>
+<script src="{% static 'highlighter.js' %}"></script>
+<script src="{% static 'annotator-full.min.js' %}"></script>
+<script src="{% static 'annotator.touch.min.js' %}"></script>
+<script src="{% static 'annotator.offline.min.js' %}"></script>
+<script>
+  jQuery("#content").annotator().annotator('addPlugin', 'Touch', {
+    force: location.search.indexOf('force') > -1,
+    useHighlighter: location.search.indexOf('highlighter') > -1
+  });
+
+  jQuery("#content").annotator().annotator('addPlugin', 'Offline', {
+    online:  function () {
+      jQuery("#status").text("Online");
+    },
+    offline: function () {
+      jQuery("#status").text("Offline");
+    }    });
+
+  jQuery("#clear-storage").click(function () {
+    if (annotator) {
+      annotator.plugins.Offline.store.clear()
+    }
+  });
+
+  /* if (!Annotator.Plugin.Touch.isTouchDevice()) {
+    if (location.search.indexOf('force') > -1) {
+      jQuery("body").prepend('<p><a href="./index.html">Disable Plugin in Desktop Browser</a></p>');
+    } else {
+      jQuery("body").prepend('<p><a href="./index.html?force">Enable Plugin in Desktop Browser</a></p>');
+    }
+  } */
+
+  var annotator = jQuery("#content").data('annotator');
+</script>
 {% endblock content %}
