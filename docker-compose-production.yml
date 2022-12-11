@@ -9,7 +9,7 @@ services:
              python manage.py runserver 0.0.0.0:8000"
     environment:
       - SECRETKEY=&w!-%qsbcb_7kdo^)roirk)evgkhu1vn(e8tztam-*+n1b#)=2
-      - ALLOWEDHOST=ec2-54-164-18-84.compute-1.amazonaws.com
+      - ALLOWEDHOST=ec2-52-55-155-229.compute-1.amazonaws.com
       - DB_NAME=colearnappdb
       - DB_USER=iotappdbuser
       - DB_PASSWORD=sweswe599.
