@@ -76,7 +76,7 @@ class Course(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = TaggableManager(blank=True)
     entity_wikidata = models.ForeignKey(WikidataEntityDict, on_delete= models.SET_NULL, null=True)
-    qcode = models.CharField(max_length=100)
+    qcode = models.CharField(max_length=100, editable= False)
 
     class Meta:
         ordering = ['-created_on']
@@ -86,7 +86,8 @@ class Course(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
-        self.qcode = self.entity_wikidata.entity_qcode
+        if self.entity_wikidata:
+            self.qcode = self.entity_wikidata.entity_qcode
         super().save(*args, **kwargs)
 
         for tag in self.tags.all():
