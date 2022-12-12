@@ -34,6 +34,7 @@
   <div class="description">
     <h3>{{ course.title }} !!</h3>
     <p class="author">by {{ course.author }} | {{ course.created_on }}</p>
+    <p class="lead">QCODE: {{course.qcode}} </p>
 
     {% for tag in course.tags.all %}
     <a href="{% url 'courses_by_tag' tag.slug %}">

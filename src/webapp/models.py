@@ -8,6 +8,7 @@ from taggit.managers import TaggableManager
 from PIL import Image
 from django.dispatch import receiver
 from ckeditor.fields import RichTextField
+import requests
 
 
 # Create your models here.
@@ -17,7 +18,33 @@ class TagDict(models.Model):
 
     def __str__(self):
         return self.tag
- 
+
+
+class WikidataEntityDict(models.Model):
+    entity_description = models.CharField(max_length=100)
+    entity_qcode = models.CharField(max_length=20)
+    entity_title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.entity_title + " -> " + self.entity_description
+
+class EntityManager:
+    def run(keyword:str):
+        WikidataEntityDict.objects.all().delete()
+        results = EntityManager.search_wikidata(keyword)
+        for index in range(len(results)):
+            WikidataEntityDict.objects.get_or_create(entity_description = results[index]['description'], entity_qcode = results[index]['id'], entity_title =results[index]['label'])
+
+    def search_wikidata(keyword: str):
+        API_ENDPOINT = "https://www.wikidata.org/w/api.php"
+        params = {
+            'action': 'wbsearchentities',
+            'format': 'json',
+            'language': 'en',
+            'search': keyword
+        }
+        search_result = requests.get(API_ENDPOINT, params = params)
+        return search_result.json()['search']
 
 class Course(models.Model):
     CATEGORY_CHOICES = ( 
@@ -30,13 +57,13 @@ class Course(models.Model):
         ("7", "Business"), 
         ("8", "Art"),
         ("9", "Other"), 
-    ) 
-    
+    )   
+
     category = models.CharField( 
         max_length = 20, 
         choices = CATEGORY_CHOICES, 
         default = '1'
-        ) 
+        )
     title = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True, editable=False)
     author = models.ForeignKey(User, on_delete= models.CASCADE)
@@ -48,6 +75,8 @@ class Course(models.Model):
     likes = models.ManyToManyField(User, blank=True, related_name='course_likes')
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = TaggableManager(blank=True)
+    entity_wikidata = models.ForeignKey(WikidataEntityDict, on_delete= models.SET_NULL, null=True)
+    qcode = models.CharField(max_length=100)
 
     class Meta:
         ordering = ['-created_on']
@@ -57,6 +86,7 @@ class Course(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title, allow_unicode=True)
+        self.qcode = self.entity_wikidata.entity_qcode
         super().save(*args, **kwargs)
 
         for tag in self.tags.all():
