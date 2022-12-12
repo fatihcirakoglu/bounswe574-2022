@@ -14,3 +14,7 @@ def get_read_time(html_string):
     count = count_words(html_string)
     read_time_min = math.ceil(count/200.0) #assuming 200wpm reading
     return int(read_time_min)
+
+def column_exists(column: str, column_list: list) -> bool:
+    if column in column_list:
+        return True

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db.models.signals import pre_save,post_save
-from .utils import get_read_time
+from .utils import get_read_time, column_exists
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from PIL import Image
@@ -21,7 +21,7 @@ class TagDict(models.Model):
 
 
 class WikidataEntityDict(models.Model):
-    entity_description = models.CharField(max_length=100)
+    entity_description = models.TextField()
     entity_qcode = models.CharField(max_length=20)
     entity_title = models.CharField(max_length=100)
 
@@ -33,6 +33,8 @@ class EntityManager:
         WikidataEntityDict.objects.all().delete()
         results = EntityManager.search_wikidata(keyword)
         for index in range(len(results)):
+            if 'description' not in list(results[index].keys()) or 'label' not in list(results[index].keys()):
+                continue
             WikidataEntityDict.objects.get_or_create(entity_description = results[index]['description'], entity_qcode = results[index]['id'], entity_title =results[index]['label'])
 
     def search_wikidata(keyword: str):
@@ -41,7 +43,8 @@ class EntityManager:
             'action': 'wbsearchentities',
             'format': 'json',
             'language': 'en',
-            'search': keyword
+            'search': keyword,
+            'limit': "max",
         }
         search_result = requests.get(API_ENDPOINT, params = params)
         return search_result.json()['search']
