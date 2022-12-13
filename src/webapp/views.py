@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import generic
-from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment
+from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment, Annotations
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

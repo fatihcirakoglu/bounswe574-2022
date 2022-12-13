@@ -8,6 +8,7 @@ from taggit.managers import TaggableManager
 from PIL import Image
 from django.dispatch import receiver
 from ckeditor.fields import RichTextField
+#from import Annotations
 
 
 # Create your models here.
@@ -171,3 +172,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return 'Comment {} by {}'.format(self.body, self.name)
+
+class Annotations (models.Model):
+    title = models.CharField(max_length=200, unique=True)
+    #author = models.ForeignKey(User, on_delete= models.CASCADE)

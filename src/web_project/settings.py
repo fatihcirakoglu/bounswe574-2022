@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import environ
-
 # Initialise environment variables
 env = environ.Env()
 environ.Env.read_env()
@@ -93,6 +92,14 @@ DATABASES = {
         'PASSWORD': env('DB_PASSWORD'),
         'HOST': env('DB_HOST'),
         'PORT': env('DB_PORT'),
+    },
+    'annotationsdb': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('DB_NAME_ANNO'),
+        'USER': env('DB_USER'),
+        'PASSWORD': env('DB_PASSWORD'),
+        'HOST': env('DB_HOST'),
+        'PORT': env('DB_PORT'),
     }
 }
 
@@ -154,3 +161,10 @@ EMAIL_USE_TLS = True
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
+
+#DATABASE_ROUTERS = (
+#       'webapp.dbrouters.AnnotationsDBRouter',
+#    )
+
+#DATABASE_ROUTERS = ['webapp.annotationrouters.AnnotationsDBRouter']
+DATABASE_ROUTERS = ('webapp.annotationrouters.AnnotationsDBRouter',)

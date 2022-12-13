@@ -33,3 +33,4 @@ email: fatih.cirakoglu@boun.edu.tr
 - **[GNU General Public License v3.0](https://opensource.org/licenses/gpl-license)**
 - Copyright 2022 © 
 
+https://stackoverflow.com/questions/65718304/django-migrate-with-specific-database-and-models
