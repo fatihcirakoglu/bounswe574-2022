@@ -25,7 +25,7 @@ class ElasticSearch(object):
     """
 
     def __init__(self,
-                 host='http://127.0.0.1:9200',
+                 host='http://ec2-52-55-155-229.compute-1.amazonaws.com:9200',
                  index='annotator',
                  authorization_enabled=False):
         self.host = host
