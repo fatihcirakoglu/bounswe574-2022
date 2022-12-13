@@ -1,5 +1,19 @@
 version: '3'
 services:
+  elasticsearch:
+    image: elasticsearch:1.7.6
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
+      - 9300:9300
+    healthcheck:
+      test: curl --fail http://127.0.0.1:9200 || exit 1
+      interval: 5s
+      retries: 5
+      start_period: 5s
+      timeout: 10s
   web:
     image: coelarnapp:1.0
     build: .
@@ -23,3 +37,15 @@ services:
     volumes:
       - ./src:/app
       - /var/lib/mysql/mysql.sock:/run/mysqld/mysqld.sock
+  annotator-store:
+    image: annotator-store:1.0.0
+    build: ./annotator-store-service
+    command: >
+      sh -c "apk --no-cache add curl && curl http://ec2-52-55-155-229.compute-1.amazonaws.com:9200/ && python ./run.py"
+    ports:
+      - "5000:5000"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    volumes:
+      - ./annotator-store-service:/app
