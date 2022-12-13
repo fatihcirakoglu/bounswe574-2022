@@ -1,0 +1,15 @@
+click==7.1.2
+elasticsearch==1.9.0
+Flask==1.1.4
+importlib-metadata==5.1.0
+iso8601==1.1.0
+itsdangerous==1.1.0
+Jinja2==2.11.3
+MarkupSafe==2.0.1
+pipdeptree==2.3.3
+PyJWT==2.6.0
+six==1.16.0
+typing-extensions==4.4.0
+urllib3==1.26.13
+Werkzeug==0.16.1
+zipp==3.11.0

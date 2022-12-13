@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  elasticsearch:
+    image: elasticsearch:1.7.6
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - 9200:9200
+      - 9300:9300
