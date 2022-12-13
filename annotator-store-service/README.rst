@@ -31,14 +31,14 @@ following in the repository root::
 
 You should see something like::
 
-    * Running on http://127.0.0.1:5000/
+    * Running on http://ec2-52-55-155-229.compute-1.amazonaws.com:5000/
     * Restarting with reloader...
 
 If you wish to customize the configuration of the Annotator Store, make
 your changes to ``annotator.cfg`` or dive into ``run.py``.
 
 Additionally, the ``HOST`` and ``PORT`` environment variables override
-the default socket binding of address ``127.0.0.1`` and port ``5000``.
+the default socket binding of address ``ec2-52-55-155-229.compute-1.amazonaws.com`` and port ``5000``.
 
 Store API
 ---------
