@@ -24,6 +24,7 @@ from django.views.generic import UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 import datetime
+from .utils import get_qcode_keywords
 
 
 def default(o):
@@ -243,10 +244,27 @@ def favorites(request):
     user = request.user
     FavCourses,_ = FavouriteCourse.objects.get_or_create(user=user)
     usercourses=Course.objects.filter(Q(author=user) | Q(author=user))
+    course_list = FavCourses.courses.all()
+    all_courses = Course.objects.all().order_by('-created_on')
+    user_courses = (usercourses | course_list).distinct()
+    user_keywords = []
+    user_course_slug_list = []
 
-    return render(request, 'favourites.html', { 'course_list': FavCourses.courses.all(), "favorites": True,"usercourses":usercourses})
+    for course in user_courses:
+        user_course_slug_list.append(course.slug)
+        user_keywords += course.related_qcodes
 
-    
+    recommended_courses = []
+
+    for course in all_courses:
+        if course.slug not in user_course_slug_list:
+            keywords = course.related_qcodes
+            matches = list(set(user_keywords).intersection(set(keywords)))
+            if len(matches) > 0:
+                recommended_courses.append(course)
+    return render(request, 'favourites.html', { 'course_list': course_list, "favorites": True,"usercourses":usercourses, 'recommended_courses': recommended_courses})
+
+
 def about(request):
     context={}
     return render(request,'about.html',context=context)

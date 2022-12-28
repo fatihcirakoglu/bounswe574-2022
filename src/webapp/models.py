@@ -1,8 +1,9 @@
 from django.db import models
+from django_mysql.models import ListCharField
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db.models.signals import pre_save,post_save
-from .utils import get_read_time, column_exists
+from .utils import get_read_time, column_exists, get_qcode_keywords
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from PIL import Image
@@ -35,7 +36,7 @@ class EntityManager:
         for index in range(len(results)):
             if 'description' not in list(results[index].keys()) or 'label' not in list(results[index].keys()):
                 continue
-            WikidataEntityDict.objects.get_or_create(entity_description = results[index]['description'], entity_qcode = results[index]['id'], entity_title =results[index]['label'])
+            WikidataEntityDict.objects.get_or_create(entity_description = results[index]['description'], entity_qcode = results[index]['id'], entity_title = results[index]['label'])
 
     def search_wikidata(keyword: str):
         API_ENDPOINT = "https://www.wikidata.org/w/api.php"
@@ -79,7 +80,12 @@ class Course(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = TaggableManager(blank=True)
     entity_wikidata = models.ForeignKey(WikidataEntityDict, on_delete= models.SET_NULL, null=True)
-    qcode = models.CharField(max_length=100, editable= False)
+    qcode = models.CharField(max_length=20, editable= False)
+    related_qcodes = ListCharField(
+        base_field=models.CharField(max_length=20),
+        size=15,
+        max_length=(15 * 21)
+    )
 
     class Meta:
         ordering = ['-created_on']
@@ -91,6 +97,7 @@ class Course(models.Model):
         self.slug = slugify(self.title, allow_unicode=True)
         if self.entity_wikidata:
             self.qcode = self.entity_wikidata.entity_qcode
+            self.related_qcodes = get_qcode_keywords(self.qcode)
         super().save(*args, **kwargs)
 
         for tag in self.tags.all():

@@ -3,6 +3,18 @@
 
 <div class="blogs">
   <article class="blog">
+    <h4 class="title">Recommended CoLearn Spaces</h4>
+    {% for course in recommended_courses %}
+      <article class="blog">
+      <h3 class="title">{{ course.title }}</h3>
+      <p class="author">{{ course.author }} | {{ course.created_on }}</p>
+      <div>
+        <a href="{% url "course-update" course.slug %}" class="button">UPDATE &rarr;</a>  <a href="{% url 'course_detail' course.slug %}" class="button">Goto Space &rarr;</a>
+      </div>
+      </article>
+    {% endfor %}
+  </article>
+  <article class="blog">
     <h4 class="title">CoLearn Spaces You Created</h4>
     {% for course in usercourses %}
       <article class="blog">

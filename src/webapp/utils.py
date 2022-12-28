@@ -1,7 +1,8 @@
 import math
 import re
 from django.utils.html import strip_tags
-
+from wikidata.client import Client
+from typing import List
 
 def count_words(html_string):
     word_string = strip_tags(html_string)
@@ -18,3 +19,21 @@ def get_read_time(html_string):
 def column_exists(column: str, column_list: list) -> bool:
     if column in column_list:
         return True
+
+
+def get_qcode_keywords(qcode: str) -> List:
+    user_keywords = []
+    client = Client() 
+    entity = client.get(qcode, load=True)
+    instance_of = client.get('P31', load=True)
+    instances = entity.getlist(instance_of)
+    for instance in instances:
+        if instance.label not in user_keywords:
+            user_keywords.append(str(instance.label))
+    subclass_of = client.get('P279', load=True)
+    subclasses = entity.getlist(subclass_of)
+    for subclass in subclasses:
+        if instance.label not in user_keywords:
+            user_keywords.append(str(subclass.label))
+    
+    return user_keywords
