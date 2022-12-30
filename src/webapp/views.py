@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import generic
-from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment
+from .models import Course, Post, FavouriteCourse, FavouritePost, Profile, Comment, EntityManager
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -23,9 +23,10 @@ from taggit.models import Tag
 from django.views.generic import UpdateView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-import requests
-
 import datetime
+from .utils import get_qcode_keywords
+
+
 def default(o):
     if isinstance(o, (datetime.date, datetime.datetime)):
         return o.isoformat()
@@ -243,10 +244,27 @@ def favorites(request):
     user = request.user
     FavCourses,_ = FavouriteCourse.objects.get_or_create(user=user)
     usercourses=Course.objects.filter(Q(author=user) | Q(author=user))
+    course_list = FavCourses.courses.all()
+    all_courses = Course.objects.all().order_by('-created_on')
+    user_courses = (usercourses | course_list).distinct()
+    user_keywords = []
+    user_course_slug_list = []
 
-    return render(request, 'favourites.html', { 'course_list': FavCourses.courses.all(), "favorites": True,"usercourses":usercourses})
+    for course in user_courses:
+        user_course_slug_list.append(course.slug)
+        user_keywords += course.related_qcodes
 
-    
+    recommended_courses = []
+
+    for course in all_courses:
+        if course.slug not in user_course_slug_list:
+            keywords = course.related_qcodes
+            matches = list(set(user_keywords).intersection(set(keywords)))
+            if len(matches) > 0:
+                recommended_courses.append(course)
+    return render(request, 'favourites.html', { 'course_list': course_list, "favorites": True,"usercourses":usercourses, 'recommended_courses': recommended_courses})
+
+
 def about(request):
     context={}
     return render(request,'about.html',context=context)
@@ -442,7 +460,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
 class CourseCreateView(LoginRequiredMixin,CreateView):
     model = Course
-    fields = ['category', 'title', 'content', 'image', 'tags']
+    fields = ['first_wikidata_entity', 'second_wikidata_entity', 'third_wikidata_entity', 'title', 'content', 'image', 'tags']
     template_name = 'course_form.html'
     redirect_field_name = "redirect"  # added
     redirect_authenticated_user = True  # added
@@ -452,37 +470,11 @@ class CourseCreateView(LoginRequiredMixin,CreateView):
         return super().form_valid(form)
 
 
-class EntityManager():
-    def search_wikidata(keyword: str):
-        API_ENDPOINT = "https://www.wikidata.org/w/api.php"
-        params = {
-            'action': 'wbsearchentities',
-            'format': 'json',
-            'language': 'en',
-            'search': keyword
-        }
-        search_result = requests.get(API_ENDPOINT, params = params)
-        search_result = search_result.json()['search']
-        if len(search_result) == 0:
-            return (("1", 'No result'))
-        formatted_search_result = (("1", search_result[0]['description']),)
-        for index in range(1,len(search_result)):
-            formatted_search_result = (*formatted_search_result, (str(index+1), search_result[index]['description']))
-        print(formatted_search_result)
-        return formatted_search_result
-
 def CourseCreateStart(request):
-    print("CourseCreateStart girildi")
     if request.method == 'POST':
-        tagkeyword = request.POST.get("tagkeyword")
-        print("CourseCreateStart girildi, tagkeyword:" + tagkeyword )
-        if (tagkeyword):
-            try:
-                EntityManager.search_wikidata(tagkeyword)
-                #wikidata
-                return redirect("create_course")
-            except IntegrityError:
-                messages.info(request, "Try different keyword")
-                return render(request, "course_create_start.html")
+        tagkeywords = request.POST.get("tagkeyword")
+        if tagkeywords:
+            EntityManager.run(tagkeywords)
+            return redirect('create_course')
         return redirect('course_create_start')
     return render(request, "course_create_start.html")
