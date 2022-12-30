@@ -14,6 +14,11 @@ This project will be developed as a part of Swe-573 course and will be conducted
 
 ## General Features of Application: 
 
+## Deployment
+- For deploying application on AWS instance, run below command
+```
+docker-compose -f docker-compose-production.yml up
+```
 ## FAQ
 
 ```

@@ -18,12 +18,15 @@ services:
     image: coelarnapp:1.0
     build: .
     command: >
-      sh -c "python manage.py makemigrations && \
+      sh -c "/usr/local/bin/python -m pip install --upgrade pip && \
+             python -m pip install -U django-cors-headers  && \
+             python -m  pip install django-cors-middleware && \
+             python manage.py makemigrations && \
              python manage.py migrate && \
              python manage.py runserver 0.0.0.0:8000"
     environment:
       - SECRETKEY=&w!-%qsbcb_7kdo^)roirk)evgkhu1vn(e8tztam-*+n1b#)=2
-      - ALLOWEDHOST=ec2-52-55-155-229.compute-1.amazonaws.com
+      - ALLOWEDHOST=*
       - DB_NAME=colearnappdb
       - DB_USER=iotappdbuser
       - DB_PASSWORD=sweswe599.
@@ -33,6 +36,7 @@ services:
       - EMAIL_HOST_PASSWORD=IHJvrNcO6jYPZqGn
     ports:
       - "80:8000"
+      - "443:8000"
 
     volumes:
       - ./src:/app
@@ -41,7 +45,9 @@ services:
     image: annotator-store:1.0.0
     build: ./annotator-store-service
     command: >
-      sh -c "apk --no-cache add curl && curl http://ec2-52-55-155-229.compute-1.amazonaws.com:9200/ && python ./run.py"
+      sh -c "apk --no-cache add curl && curl http://elasticsearch:9200/ && python ./run.py"
+    #command: >
+    #  sh -c "python ./run.py"
     ports:
       - "5000:5000"
     depends_on:
