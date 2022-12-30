@@ -37,7 +37,7 @@ ALLOWED_HOSTS = [env('ALLOWEDHOST')]
 # Application definition
 
 INSTALLED_APPS = [
-    'corsheaders',
+    #'corsheaders',
     'webapp',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    #'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
