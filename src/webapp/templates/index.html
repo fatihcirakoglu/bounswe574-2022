@@ -3,6 +3,21 @@
 <div class="blogs">
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+{% if user.is_authenticated %}
+<center> <article class="blog">
+    <h4 class="title">Recommended CoLearn Spaces For You</h4>
+    {% for course in recommended_courses %}
+        <article class="blog">
+        <h3 class="title">{{ course.title }}</h3>
+        <p class="author">{{ course.author }} | {{ course.created_on }}</p>
+        <div>
+        <a href="{% url 'course_detail' course.slug %}" class="button">Goto Space &rarr;</a>
+        </div>
+        </article>
+    {% endfor %}
+</article>
+</center>
+{% else %}
 <script>
   getCourses();
   function getCourses(page = 1){
@@ -48,4 +63,5 @@
     })
   }
 </script>
+{% endif %}
 {% endblock content %}
