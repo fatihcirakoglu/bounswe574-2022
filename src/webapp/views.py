@@ -100,6 +100,31 @@ def courselist(request):
          courses = course_list.page(1)
     except EmptyPage:
          courses = course_list.page(course_list.num_pages)
+    #####
+    if request.user.is_authenticated:
+        user = request.user
+        FavCourses,_ = FavouriteCourse.objects.get_or_create(user=user)
+        usercourses=Course.objects.filter(Q(author=user) | Q(author=user))
+        course_list = FavCourses.courses.all()
+        all_courses = Course.objects.all().order_by('-created_on')
+        user_courses = (usercourses | course_list).distinct()
+        user_keywords = []
+        user_course_slug_list = []
+
+        for course in user_courses:
+            user_course_slug_list.append(course.slug)
+            user_keywords += course.related_qcodes
+
+        recommended_courses = []
+
+        for course in all_courses:
+            if course.slug not in user_course_slug_list:
+                keywords = course.related_qcodes
+                matches = list(set(user_keywords).intersection(set(keywords)))
+                if len(matches) > 0:
+                    recommended_courses.append(course)
+        return render(request,'index.html', {'recommended_courses': recommended_courses})
+    #return render(request, 'favourites.html', { 'course_list': course_list, "favorites": True,"usercourses":usercourses, 'recommended_courses': recommended_courses})
 
     return render(request,'index.html', {"course_list": courses})
 

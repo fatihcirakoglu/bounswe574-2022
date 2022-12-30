@@ -135,10 +135,10 @@ class Course(models.Model):
     first_wikidata_entity = models.ForeignKey(WikidataFirstEntityDict, on_delete= models.SET_NULL, null=True, blank=True)
     second_wikidata_entity = models.ForeignKey(WikidataSecondEntityDict, on_delete= models.SET_NULL, null=True, blank=True)
     third_wikidata_entity = models.ForeignKey(WikidataThirdEntityDict, on_delete= models.SET_NULL, null=True, blank=True)
-    first_qcode = models.CharField(max_length=20, editable= False)
-    second_qcode = models.CharField(max_length=20, editable= False)
-    third_qcode = models.CharField(max_length=20, editable= False)
-    related_qcodes = ListCharField(
+    first_qcode = models.CharField(default = ' ', max_length=20, editable= False)
+    second_qcode = models.CharField(default = ' ', max_length=20, editable= False)
+    third_qcode = models.CharField(default = ' ', max_length=20, editable= False)
+    related_qcodes = ListCharField(default = [],
         base_field=models.CharField(max_length=20),
         size=45,
         max_length=(45 * 21)
