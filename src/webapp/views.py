@@ -460,7 +460,7 @@ class PostCreateView(LoginRequiredMixin,CreateView):
 
 class CourseCreateView(LoginRequiredMixin,CreateView):
     model = Course
-    fields = ['entity_wikidata', 'title', 'content', 'image', 'tags']
+    fields = ['first_wikidata_entity', 'second_wikidata_entity', 'third_wikidata_entity', 'title', 'content', 'image', 'tags']
     template_name = 'course_form.html'
     redirect_field_name = "redirect"  # added
     redirect_authenticated_user = True  # added
@@ -472,9 +472,9 @@ class CourseCreateView(LoginRequiredMixin,CreateView):
 
 def CourseCreateStart(request):
     if request.method == 'POST':
-        tagkeyword = request.POST.get("tagkeyword")
-        if (tagkeyword):
-            EntityManager.run(tagkeyword)
+        tagkeywords = request.POST.get("tagkeyword")
+        if tagkeywords:
+            EntityManager.run(tagkeywords)
             return redirect('create_course')
         return redirect('course_create_start')
     return render(request, "course_create_start.html")

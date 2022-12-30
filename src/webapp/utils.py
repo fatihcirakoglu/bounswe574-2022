@@ -25,15 +25,14 @@ def get_qcode_keywords(qcode: str) -> List:
     user_keywords = []
     client = Client() 
     entity = client.get(qcode, load=True)
-    instance_of = client.get('P31', load=True)
+    instance_of = client.get('P31')
     instances = entity.getlist(instance_of)
     for instance in instances:
-        if instance.label not in user_keywords:
-            user_keywords.append(str(instance.label))
-    subclass_of = client.get('P279', load=True)
+        if str(instance.id) not in user_keywords:
+            user_keywords.append(str(instance.id))
+    subclass_of = client.get('P279')
     subclasses = entity.getlist(subclass_of)
     for subclass in subclasses:
-        if instance.label not in user_keywords:
-            user_keywords.append(str(subclass.label))
-    
+        if str(instance.id) not in user_keywords:
+            user_keywords.append(str(subclass.id))
     return user_keywords
