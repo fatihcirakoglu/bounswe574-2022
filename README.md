@@ -1,5 +1,5 @@
 # SWE-574 Project
-This project will be developed as a part of Swe-573 course and will be conducted by applying all software project life cycle steps like below. 
+This project will be developed as a part of Swe-574 course and will be conducted by applying all software project life cycle steps like below. 
 
 - Requirements elicitation
 - Modelling
@@ -19,6 +19,9 @@ This project will be developed as a part of Swe-573 course and will be conducted
 ```
 docker-compose -f docker-compose-production.yml up
 ```
+
+Deployment Link: http://ec2-52-55-155-229.compute-1.amazonaws.com/
+
 ## FAQ
 
 ```
