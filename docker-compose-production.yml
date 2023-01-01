@@ -33,7 +33,6 @@ services:
       - EMAIL_HOST_PASSWORD=IHJvrNcO6jYPZqGn
     ports:
       - "80:8000"
-      - "443:8000"
 
     volumes:
       - ./src:/app
