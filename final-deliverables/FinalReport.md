@@ -370,5 +370,11 @@ Each logged in user can join colearn spaces freely and create posts under these
 spaces. Also, every user can ask questions under posts.
 To annotate on the web page, you can select the content that you want to annotate and as the end of your selection the system will show you a dialog box to save your annotations. You might hover over the annotations to to see, edit or delete them.
 
-### Test results (unit & user)
+### External Resources:
+http://annotatorjs.org/
+https://github.com/openannotation/annotator/
+https://github.com/openannotation/annotator-store
+https://www.wikidata.org/
+https://www.w3.org/TR/annotation-model/
+https://github.com/dahlia/wikidata
 
