@@ -16,8 +16,9 @@
 - Baris Karapinar
 
 ## User IDs for Testing Purpose
-- Test User 1: (username: uskudarli, password:testuser1)
-- Test User 2: (username: uskudarli1, password:testuser2)
+- Test User 1: (username: fatih, password:1234)
+- Test User 2: (username: uskudarli, password:testuser1)
+- Test User 3: (username: uskudarli1, password:testuser2)
 
 ## HONOR CODE
 Related to the submission of all the project deliverables for the Swe574 2022-2023
